@@ -19,13 +19,14 @@
    zeichen kopieren. Leer lassen = nur lokaler Modus.
    ═══════════════════════════════════════════════════════ */
 const FIREBASE_CONFIG = {
-  apiKey: "",
-  authDomain: "fitness-challenge-lucas.firebaseapp.com",
-  databaseURL: "https://fitness-challenge-lucas-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "fitness-challenge-lucas",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: ""
+  apiKey: "AIzaSyAY1iHX5BHJdLUrrHk2DEZ7iDYF89mhK3I",
+    authDomain: "fitness-challenge-lucas.firebaseapp.com",
+    databaseURL: "https://fitness-challenge-lucas-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "fitness-challenge-lucas",
+    storageBucket: "fitness-challenge-lucas.firebasestorage.app",
+    messagingSenderId: "697119450947",
+    appId: "1:697119450947:web:c81b9bded839bcc25fb1f6",
+    measurementId: "G-9YNN43JHS9"
 };
 let db=null,FB=false;
 try{if(FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.databaseURL){firebase.initializeApp(FIREBASE_CONFIG);db=firebase.database();FB=true;}}catch(e){FB=false;db=null;}
@@ -406,9 +407,9 @@ input[type=number]{-moz-appearance:textfield}
     <div class="hint">Werte gelten für Lucas. Paul bekommt automatisch das Vielfache (Faktor).</div>
     <div class="plan-ed">
       <div></div><div class="hd">Start Woche 1</div><div class="hd">+ pro Woche</div>
-      <div>🏃 Laufen (km)</div><input type="number" id="pl-run-b" step="0.1" min="0" inputmode="decimal"><input type="number" id="pl-run-s" step="0.1" min="0" inputmode="decimal">
-      <div>💪 Liegestütze</div><input type="number" id="pl-push-b" step="1" min="0" inputmode="numeric"><input type="number" id="pl-push-s" step="1" min="0" inputmode="numeric">
-      <div>🧗 Klimmzüge</div><input type="number" id="pl-pull-b" step="1" min="0" inputmode="numeric"><input type="number" id="pl-pull-s" step="1" min="0" inputmode="numeric">
+      <div> Laufen (km)</div><input type="number" id="pl-run-b" step="0.1" min="0" inputmode="decimal"><input type="number" id="pl-run-s" step="0.1" min="0" inputmode="decimal">
+      <div> Liegestütze</div><input type="number" id="pl-push-b" step="1" min="0" inputmode="numeric"><input type="number" id="pl-push-s" step="1" min="0" inputmode="numeric">
+      <div> Klimmzüge</div><input type="number" id="pl-pull-b" step="1" min="0" inputmode="numeric"><input type="number" id="pl-pull-s" step="1" min="0" inputmode="numeric">
     </div>
     <div class="ig"><label>Faktor für Paul</label><input type="number" id="pl-mult" step="0.1" min="0.1" inputmode="decimal"></div>
     <button class="btn bgr" style="margin-top:10px" onclick="savePlan()">Plan speichern</button>
@@ -458,7 +459,7 @@ input[type=number]{-moz-appearance:textfield}
 <script>
 /* ═════════════ Konstanten ═════════════ */
 const LS='ct5',KEYS=['run','push','pull'],PEOPLE=['paul','lucas'],NAME={paul:'Paul',lucas:'Lucas'};
-const DISC={run:{ic:'🏃',lb:'Laufen',u:'km',dec:1,col:'#2dd4bf'},push:{ic:'💪',lb:'Liegestütze',u:'',dec:0,col:'#ff5fa2'},pull:{ic:'🧗',lb:'Klimmzüge',u:'',dec:0,col:'#a78bfa'}};
+const DISC={run:{ic:'',lb:'Laufen',u:'km',dec:1,col:'#2dd4bf'},push:{ic:'',lb:'Liegestütze',u:'',dec:0,col:'#ff5fa2'},pull:{ic:'',lb:'Klimmzüge',u:'',dec:0,col:'#a78bfa'}};
 const DEFPLAN={push:{base:100,step:20},pull:{base:5,step:1},run:{base:6,step:.5}};
 const WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
 const g=id=>document.getElementById(id);
@@ -701,12 +702,12 @@ function chart(key,title){const cw=curWeek(),W=Math.max(cw,2),ser={paul:[],lucas
   s+='</svg>';
   return '<div class="g chart"><div class="rtit">'+title+'</div>'+s+'<div class="leg"><span><i style="background:#8cc6ff"></i>Paul</span><span><i style="background:#ffab80"></i>Lucas</span></div></div>'}
 function rRecords(){const b=bests();let h='<div class="st" style="margin-top:0">Persönliche Bestleistungen</div>';
-  h+=prCard('💪','Liegestütze am Stück',b.paul.push,b.lucas.push,'','','');
-  h+=prCard('🧗','Klimmzüge am Stück',b.paul.pull,b.lucas.pull,'','','');
-  h+=prCard('🏃','Bester Lauf (Score)',b.paul.score,b.lucas.score,b.paul.km?f1(b.paul.km)+' km @ '+b.paul.pace:'',b.lucas.km?f1(b.lucas.km)+' km @ '+b.lucas.pace:'',' Pkt');
+  h+=prCard('','Liegestütze am Stück',b.paul.push,b.lucas.push,'','','');
+  h+=prCard('','Klimmzüge am Stück',b.paul.pull,b.lucas.pull,'','','');
+  h+=prCard('','Bester Lauf (Score)',b.paul.score,b.lucas.score,b.paul.km?f1(b.paul.km)+' km @ '+b.paul.pace:'',b.lucas.km?f1(b.lucas.km)+' km @ '+b.lucas.pace:'',' Pkt');
   h+='<div class="pinfo" style="margin:-4px 0 12px"><strong>Lauf-Score</strong> = km × Tempo (km/h). So zählt 5 km @ 5:00 (60) mehr als 6 km @ 7:00 (51).</div>';
   h+='<div class="st">Entwicklung pro Woche</div>';
-  const c=chart('maxPush','💪 Liegestütze am Stück')+chart('maxPull','🧗 Klimmzüge am Stück')+chart('score','🏃 Lauf-Score');
+  const c=chart('maxPush',' Liegestütze am Stück')+chart('maxPull',' Klimmzüge am Stück')+chart('score',' Lauf-Score');
   h+=c||emptyBox('📈','Noch keine Rekorde eingetragen');
   g('rec-c').innerHTML=h}
 
@@ -734,7 +735,7 @@ function rConfig(){const a=document.activeElement,foc=a&&a.tagName==='INPUT'&&g(
   if(!foc){g('sDate').value=S.cfg.startDate||'';
     KEYS.forEach(k=>{g('pl-'+k+'-b').value=S.cfg.plan[k].base;g('pl-'+k+'-s').value=S.cfg.plan[k].step});
     g('pl-mult').value=S.cfg.mult;g('adjP').value=S.cfg.winAdj.paul||0;g('adjL').value=S.cfg.winAdj.lucas||0}
-  const cw=curWeek();let t='<table class="ptab"><tr><th>Woche</th><th>💪 Liegest.</th><th>🧗 Klimmz.</th><th>🏃 Lauf km</th></tr>';
+  const cw=curWeek();let t='<table class="ptab"><tr><th>Woche</th><th> Liegest.</th><th> Klimmz.</th><th> Lauf km</th></tr>';
   for(let w=1;w<=Math.max(cw+4,8);w++)t+='<tr'+(w===cw?' class="cur"':'')+'><td>'+(w===cw?'▶ ':'')+'W'+w+'</td>'+['push','pull','run'].map(k=>'<td><span class="pp">'+fv(k,goal('paul',k,w))+'</span> / <span class="ll">'+fv(k,goal('lucas',k,w))+'</span></td>').join('')+'</tr>';
   t+='</table><div class="hint" style="margin-top:6px"><span style="color:var(--paul-lt)">■</span> Paul · <span style="color:var(--lucas-lt)">■</span> Lucas</div>';
   g('planT').innerHTML=t;
